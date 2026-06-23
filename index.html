@@ -141,6 +141,9 @@
                     <option value="https://iptv-org.github.io/iptv/categories/sports.m3u">⚽ Olahraga</option>
                     <option value="https://iptv-org.github.io/iptv/categories/movies.m3u">🎬 Film & Hiburan</option>
                     <option value="https://iptv-org.github.io/iptv/categories/music.m3u">🎵 Musik</option>
+                    <option value="https://iptv-org.github.io/iptv/categories/education.m3u">📚 Pendidikan</option>
+                    <option value="https://iptv-org.github.io/iptv/categories/religious.m3u">🕌 Agama</option>
+                    <option value="https://iptv-org.github.io/iptv/categories/kids.m3u">🧸 Anak-anak</option>
                 </select>
                 <div class="relative">
                     <input type="text" id="search-input" oninput="filterChannels()" placeholder="Cari saluran spesifik..." class="w-full bg-slate-950 border border-emerald-700/50 text-slate-200 px-3 py-2.5 rounded-lg pl-9 focus:outline-none focus:border-yellow-400 transition-colors text-sm shadow-inner">
@@ -245,6 +248,9 @@
             <button onclick="botAction('olahraga')" class="whitespace-nowrap px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-orange-400 text-xs rounded border border-emerald-700 font-bold transition active:scale-95">Olahraga</button>
             <button onclick="botAction('film')" class="whitespace-nowrap px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-rose-400 text-xs rounded border border-emerald-700 font-bold transition active:scale-95">Film</button>
             <button onclick="botAction('musik')" class="whitespace-nowrap px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-purple-400 text-xs rounded border border-emerald-700 font-bold transition active:scale-95">Musik</button>
+            <button onclick="botAction('pendidikan')" class="whitespace-nowrap px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-teal-400 text-xs rounded border border-emerald-700 font-bold transition active:scale-95">Pendidikan</button>
+            <button onclick="botAction('agama')" class="whitespace-nowrap px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-yellow-200 text-xs rounded border border-emerald-700 font-bold transition active:scale-95">Agama</button>
+            <button onclick="botAction('anak')" class="whitespace-nowrap px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-pink-400 text-xs rounded border border-emerald-700 font-bold transition active:scale-95">Anak-anak</button>
         </div>
 
         <div class="p-2.5 bg-slate-950 border-t border-emerald-900 flex gap-2 shrink-0">
@@ -509,6 +515,9 @@
             else if(category === 'olahraga') { link = 'https://iptv-org.github.io/iptv/categories/sports.m3u'; catName = 'Olahraga'; }
             else if(category === 'film') { link = 'https://iptv-org.github.io/iptv/categories/movies.m3u'; catName = 'Film & Hiburan'; }
             else if(category === 'musik') { link = 'https://iptv-org.github.io/iptv/categories/music.m3u'; catName = 'Musik'; }
+            else if(category === 'pendidikan') { link = 'https://iptv-org.github.io/iptv/categories/education.m3u'; catName = 'Pendidikan'; }
+            else if(category === 'agama') { link = 'https://iptv-org.github.io/iptv/categories/religious.m3u'; catName = 'Agama'; }
+            else if(category === 'anak') { link = 'https://iptv-org.github.io/iptv/categories/kids.m3u'; catName = 'Anak-anak'; }
             
             selector.value = link;
             addChatMessage(`Membuka intersept telemetri untuk <b>${catName}</b>...`, 'bot');
