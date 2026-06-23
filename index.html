@@ -2,19 +2,19 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>IPTV-org Web Player | Studio Matrix</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* Dukungan viewport dinamis untuk mobile */
-        body { background-color: #0f172a; color: #e2e8f0; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; height: 100dvh; }
+        body { background-color: #0f172a; color: #e2e8f0; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; height: 100dvh; -webkit-tap-highlight-color: transparent; transition: background-color 0.3s, color 0.3s; }
         
-        /* Scrollbar Kustom (Tema Emerald/Gold) */
-        .custom-scrollbar::-webkit-scrollbar { width: 5px; height: 5px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #10b981; border-radius: 10px; }
+        /* Scrollbar Kustom (Tema Emerald/Gold) - Diperbarui agar horizontal lebih terlihat */
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.5); border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #10b981; border-radius: 10px; border: 1px solid transparent; background-clip: padding-box; }
         .active-channel { background-color: #064e3b; border-left: 4px solid #facc15; }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         
@@ -25,7 +25,7 @@
 
         /* Kustomisasi Tampilan Google Translate */
         .goog-te-gadget { color: transparent !important; font-size: 0 !important; display: flex !important; align-items: center; }
-        .goog-te-combo { background-color: #1e293b !important; color: #cbd5e1 !important; border: 1px solid #10b981 !important; border-radius: 0.5rem; padding: 0.2rem 0.5rem; font-size: 0.75rem; outline: none; cursor: pointer; font-family: monospace; font-weight: bold; max-width: 120px; }
+        .goog-te-combo { background-color: #1e293b !important; color: #cbd5e1 !important; border: 1px solid #10b981 !important; border-radius: 0.5rem; padding: 0.4rem 0.6rem; font-size: 0.85rem; outline: none; cursor: pointer; font-family: monospace; font-weight: bold; max-width: 130px; }
         .goog-te-combo:focus { border-color: #facc15 !important; }
         .goog-logo-link, .goog-te-gadget span { display: none !important; }
         body { top: 0 !important; } 
@@ -35,9 +35,28 @@
         :-webkit-full-screen { background-color: #0f172a; }
         :-moz-full-screen { background-color: #0f172a; }
         :fullscreen { background-color: #0f172a; }
+
+        /* ====================================================
+           SISTEM TEMA LIGHT MODE (Override Kelas Tailwind) 
+           ==================================================== */
+        body.light-theme { background-color: #e2e8f0 !important; color: #0f172a !important; }
+        .light-theme .bg-\[\#020617\], .light-theme .bg-\[\#061614\] { background: #e2e8f0 !important; }
+        .light-theme .bg-slate-900 { background-color: #ffffff !important; }
+        .light-theme .bg-slate-950 { background-color: #f8fafc !important; }
+        .light-theme .bg-\[\#0f172a\] { background-color: #f1f5f9 !important; }
+        .light-theme .text-slate-200, .light-theme .text-slate-300, .light-theme .text-white { color: #1e293b !important; }
+        .light-theme .border-emerald-800\/60, .light-theme .border-emerald-800, .light-theme .border-emerald-900, .light-theme .border-emerald-700\/50 { border-color: #cbd5e1 !important; }
+        .light-theme .border-emerald-600\/60 { border-color: #94a3b8 !important; }
+        .light-theme .bg-black { background-color: #ffffff !important; }
+        .light-theme video.bg-black { background-color: #000 !important; } /* Video background remains black */
+        .light-theme #chat-messages { background-color: #f1f5f9 !important; background-image: none !important; }
+        .light-theme .bg-emerald-800\/80 { background-color: #d1fae5 !important; color: #065f46 !important; border-color: #34d399 !important; }
+        .light-theme .text-yellow-100 { color: #064e3b !important; }
+        .light-theme .bg-slate-800\/90 { background-color: #ffffff !important; border-color: #cbd5e1 !important; color: #334155 !important; }
+        .light-theme .shadow-\[0_4px_20px_rgba\(16\,185\,129\,0\.15\)\] { box-shadow: 0 4px 20px rgba(0,0,0,0.05) !important; }
     </style>
 </head>
-<body class="w-screen flex flex-col overflow-hidden relative">
+<body class="w-screen flex flex-col overflow-hidden relative select-none">
 
     <div id="global-loader" class="fixed inset-0 bg-[#020617] z-[100000] flex flex-col items-center justify-center transition-opacity duration-700 ease-in-out">
         <div class="absolute inset-0 sc-matrix-grid opacity-40"></div>
@@ -68,33 +87,39 @@
     </div>
 
     <header class="h-14 md:h-16 bg-slate-900 border-b border-emerald-800/60 flex items-center justify-between px-3 lg:px-6 z-40 shrink-0 shadow-[0_4px_20px_rgba(16,185,129,0.15)]">
-        <div class="flex items-center gap-3 md:gap-4">
-            <button onclick="toggleSidebar()" class="lg:hidden text-emerald-400 hover:text-yellow-400 transition p-1">
-                <i class="fa-solid fa-bars text-lg md:text-xl"></i>
+        <div class="flex items-center gap-2 md:gap-3">
+            <button onclick="toggleSidebar()" class="lg:hidden text-emerald-400 hover:text-yellow-400 transition p-2.5 active:scale-95 bg-slate-950/50 border border-emerald-800/40 rounded-lg">
+                <i class="fa-solid fa-bars text-lg"></i>
             </button>
             <h1 class="text-sm md:text-xl font-black tracking-wide flex items-center gap-1.5 md:gap-2 uppercase text-white truncate">
-                <i class="fa-solid fa-satellite-dish text-yellow-400"></i> <span class="hidden sm:inline">IPTV Terminal</span><span class="sm:hidden">IPTV</span>
+                <i class="fa-solid fa-satellite-dish text-yellow-400"></i> 
+                <span class="hidden sm:inline">IPTV Terminal</span><span class="sm:hidden">IPTV</span>
+                <span class="text-[9px] md:text-[10px] font-mono text-emerald-400 border border-emerald-500/50 rounded px-1.5 py-0.5 ml-1 md:ml-2 bg-emerald-950/30 font-bold">v1.0</span>
             </h1>
         </div>
         
-        <div class="flex items-center gap-2 md:gap-4 flex-wrap justify-end">
+        <div class="flex items-center gap-2 md:gap-3 flex-wrap justify-end">
             <div class="hidden md:flex flex-col text-right font-mono border-r border-emerald-700/50 pr-4">
                 <span id="dash-clock" class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-yellow-400 font-black text-base md:text-lg tracking-wider drop-shadow-md">00:00:00 WIB</span>
                 <span id="dash-date" class="text-[10px] md:text-xs text-emerald-500/80 font-bold tracking-widest uppercase">Hari, Tanggal</span>
             </div>
 
-            <div class="flex items-center gap-1.5 bg-slate-950 border border-emerald-700/50 rounded-lg pl-2 pr-1 py-0.5 max-w-[140px] md:max-w-none shadow-inner">
+            <div class="hidden sm:flex items-center gap-1.5 bg-slate-950 border border-emerald-700/50 rounded-lg pl-2 pr-1 py-0.5 max-w-[140px] md:max-w-none shadow-inner">
                 <i class="fa-solid fa-language text-yellow-400 text-sm md:text-lg"></i>
                 <div id="google_translate_element"></div>
             </div>
 
-            <button onclick="toggleFullScreen()" id="btn-fs-main" class="hidden sm:flex bg-slate-950 hover:bg-slate-800 border border-emerald-700/50 text-emerald-400 px-2.5 py-1.5 rounded-lg text-xs font-bold transition items-center gap-2 shadow-sm">
+            <button onclick="toggleTheme()" id="btn-theme" class="bg-slate-950 hover:bg-slate-800 border border-emerald-700/50 text-emerald-400 w-9 h-9 md:w-auto md:h-auto md:px-3 md:py-2 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 shadow-sm active:scale-95" title="Ganti Tema">
+                <i id="icon-theme" class="fa-solid fa-sun text-yellow-400"></i> <span class="hidden md:inline text-slate-300" id="text-theme">LIGHT</span>
+            </button>
+
+            <button onclick="toggleFullScreen()" id="btn-fs-main" class="hidden sm:flex bg-slate-950 hover:bg-slate-800 border border-emerald-700/50 text-emerald-400 px-3 py-2 rounded-lg text-xs font-bold transition items-center gap-2 shadow-sm active:scale-95">
                 <i id="icon-fs-main" class="fa-solid fa-expand text-yellow-400"></i> <span class="hidden lg:inline text-slate-300" id="text-fs-main">FULLSCREEN</span>
             </button>
-            <button onclick="openModal('creatorModal')" class="bg-slate-950 hover:bg-slate-800 border border-emerald-700/50 text-emerald-400 w-8 h-8 md:w-auto md:h-auto md:px-3 md:py-1.5 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 shadow-sm" title="Creator">
+            <button onclick="openModal('creatorModal')" class="bg-slate-950 hover:bg-slate-800 border border-emerald-700/50 text-emerald-400 w-9 h-9 md:w-auto md:h-auto md:px-3 md:py-2 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 shadow-sm active:scale-95" title="Creator">
                 <i class="fa-solid fa-code text-yellow-400"></i> <span class="hidden md:inline text-slate-300">CREATOR</span>
             </button>
-            <button onclick="openModal('helpModal')" class="bg-slate-950 hover:bg-slate-800 border border-emerald-700/50 text-emerald-400 w-8 h-8 md:w-auto md:h-auto md:px-3 md:py-1.5 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 shadow-sm" title="Bantuan">
+            <button onclick="openModal('helpModal')" class="bg-slate-950 hover:bg-slate-800 border border-emerald-700/50 text-emerald-400 w-9 h-9 md:w-auto md:h-auto md:px-3 md:py-2 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 shadow-sm active:scale-95" title="Bantuan">
                 <i class="fa-solid fa-circle-question text-yellow-400"></i> <span class="hidden md:inline text-slate-300">HELP</span>
             </button>
         </div>
@@ -102,30 +127,29 @@
 
     <div class="flex flex-1 overflow-hidden relative bg-gradient-to-b from-[#020617] to-[#061614]">
         
-        <div id="sidebar-overlay" class="fixed inset-0 bg-black/70 z-20 hidden lg:hidden backdrop-blur-sm transition-opacity" onclick="toggleSidebar()"></div>
+        <div id="sidebar-overlay" class="fixed inset-0 bg-black/70 z-20 hidden lg:hidden backdrop-blur-sm transition-opacity animate-fade-in" onclick="toggleSidebar()"></div>
 
         <aside id="sidebar" class="w-[85vw] max-w-[320px] lg:w-80 bg-slate-900 border-r border-emerald-800/60 flex flex-col transition-transform duration-300 absolute lg:relative z-30 h-full -translate-x-full lg:translate-x-0 shadow-[4px_0_20px_rgba(16,185,129,0.15)] lg:shadow-none">
-            <div class="p-3 md:p-4 border-b border-emerald-800/40 space-y-2.5">
-                <div class="flex justify-between items-center lg:hidden mb-2">
-                    <span class="font-bold text-yellow-400 text-sm uppercase tracking-wider">Navigasi Saluran</span>
-                    <button onclick="toggleSidebar()" class="text-emerald-500 hover:text-white p-1"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <div class="p-3 md:p-4 border-b border-emerald-800/40 space-y-3">
+                <div class="flex justify-between items-center lg:hidden mb-1">
+                    <span class="font-bold text-yellow-400 text-xs uppercase tracking-wider">Navigasi Saluran</span>
+                    <button onclick="toggleSidebar()" class="text-emerald-500 hover:text-white p-2 bg-slate-950/40 rounded border border-emerald-800/40"><i class="fa-solid fa-xmark text-base"></i></button>
                 </div>
-                <select id="playlist-selector" onchange="changePlaylist()" class="w-full bg-slate-950 border border-emerald-600/50 text-xs md:text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-yellow-400 text-slate-200 cursor-pointer font-bold shadow-inner">
-                    <option value="https://iptv-org.github.io/iptv/countries/id.m3u">🌍 TV Indonesia (ID)</option>
+                <select id="playlist-selector" onchange="changePlaylist()" class="w-full bg-slate-950 border border-emerald-600/50 text-sm rounded-lg px-3 py-2.5 focus:outline-none focus:border-yellow-400 text-slate-200 cursor-pointer font-bold shadow-inner">
+                    <option value="https://iptv-org.github.io/iptv/countries/id.m3u">🇮🇩 TV Indonesia (ID)</option>
                     <option value="https://iptv-org.github.io/iptv/categories/news.m3u">📰 Berita Internasional</option>
                     <option value="https://iptv-org.github.io/iptv/categories/sports.m3u">⚽ Olahraga</option>
                     <option value="https://iptv-org.github.io/iptv/categories/movies.m3u">🎬 Film & Hiburan</option>
                     <option value="https://iptv-org.github.io/iptv/categories/music.m3u">🎵 Musik</option>
                 </select>
                 <div class="relative">
-                    <input type="text" id="search-input" oninput="filterChannels()" placeholder="Cari saluran spesifik..." class="w-full bg-slate-950 border border-emerald-700/50 text-slate-200 px-3 py-1.5 md:py-2 rounded-lg pl-9 focus:outline-none focus:border-yellow-400 transition-colors text-xs md:text-sm shadow-inner">
-                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 md:top-3 text-emerald-500 text-xs md:text-sm"></i>
+                    <input type="text" id="search-input" oninput="filterChannels()" placeholder="Cari saluran spesifik..." class="w-full bg-slate-950 border border-emerald-700/50 text-slate-200 px-3 py-2.5 rounded-lg pl-9 focus:outline-none focus:border-yellow-400 transition-colors text-sm shadow-inner">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-3.5 text-emerald-500 text-sm"></i>
                 </div>
                 <div class="text-[10px] md:text-xs text-yellow-400 font-bold font-mono bg-emerald-950/40 px-2 py-1 rounded border border-emerald-800/50 inline-block shadow-sm" id="channel-count">Menunggu data...</div>
             </div>
             
-            <ul id="channel-list" class="flex-1 overflow-y-auto custom-scrollbar p-2 space-y-1">
-                </ul>
+            <ul id="channel-list" class="flex-1 overflow-y-auto custom-scrollbar p-2 space-y-1"></ul>
         </aside>
 
         <main class="flex-1 flex flex-col relative z-10 w-full min-w-0">
@@ -134,7 +158,7 @@
                     
                     <div id="idle-state" class="absolute inset-0 flex flex-col items-center justify-center text-emerald-700 z-10 px-4 text-center bg-[#020a08]">
                         <i class="fa-solid fa-tower-broadcast text-4xl md:text-6xl mb-3 md:mb-4 text-emerald-800/50"></i>
-                        <p class="font-bold tracking-wider uppercase text-xs md:text-sm text-yellow-500/70">Pilih Saluran Dari Panel Kiri</p>
+                        <p class="font-bold tracking-wider uppercase text-xs md:text-sm text-yellow-500/70">Pilih Saluran Dari Panel Kiri atau Chatbot</p>
                     </div>
 
                     <div id="loading-indicator" class="absolute inset-0 bg-slate-950/90 flex flex-col items-center justify-center hidden z-20 backdrop-blur-sm border border-yellow-500/20">
@@ -162,26 +186,26 @@
                 
                 <div class="flex items-center justify-between w-full sm:w-auto gap-4">
                     <div class="flex flex-col text-right font-mono sm:hidden">
-                        <span id="dash-clock-mobile" class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-yellow-400 font-black text-sm tracking-wider">00:00</span>
+                        <span id="dash-clock-mobile" class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-yellow-400 font-black text-sm tracking-wider">00:00 WIB</span>
                     </div>
-                    <button onclick="stopPlayer()" class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-slate-950 border border-emerald-800 text-emerald-500 hover:bg-rose-600 hover:text-white hover:border-rose-500 transition-colors flex items-center justify-center shadow-lg shrink-0 ml-auto sm:ml-0" title="Hentikan Siaran">
-                        <i class="fa-solid fa-power-off text-base md:text-lg"></i>
+                    <button onclick="stopPlayer()" class="w-11 h-11 md:w-12 md:h-12 rounded-full bg-slate-950 border border-emerald-800 text-emerald-500 hover:bg-rose-600 hover:text-white hover:border-rose-500 transition-colors flex items-center justify-center shadow-lg shrink-0 ml-auto sm:ml-0 active:scale-90" title="Hentikan Siaran">
+                        <i class="fa-solid fa-power-off text-lg"></i>
                     </button>
                 </div>
             </div>
         </main>
     </div>
 
-    <div class="fixed bottom-24 sm:bottom-28 md:bottom-6 right-4 md:right-6 z-50 flex flex-col md:flex-row items-center gap-3">
-        <button onclick="toggleScreensaver()" class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-slate-900 border border-emerald-600 text-yellow-400 hover:text-white hover:bg-emerald-700 hover:scale-110 transition-all flex items-center justify-center shadow-[0_0_15px_rgba(16,185,129,0.3)]" title="Aktifkan Screensaver">
-            <i class="fa-solid fa-desktop text-sm md:text-lg"></i>
+    <div class="fixed bottom-24 sm:bottom-28 md:bottom-6 right-4 md:right-6 z-50 flex flex-col md:flex-row items-center gap-3.5">
+        <button onclick="toggleScreensaver()" class="w-11 h-11 md:w-12 md:h-12 rounded-full bg-slate-900 border border-emerald-600 text-yellow-400 hover:text-white hover:bg-emerald-700 hover:scale-110 transition-all flex items-center justify-center shadow-[0_0_15px_rgba(16,185,129,0.3)] active:scale-95" title="Aktifkan Screensaver">
+            <i class="fa-solid fa-desktop text-base"></i>
         </button>
-        <button onclick="toggleChatbot()" class="w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-br from-emerald-600 to-emerald-800 border-2 border-yellow-400 text-white hover:brightness-110 hover:scale-110 transition-all flex items-center justify-center shadow-[0_0_20px_rgba(250,204,21,0.5)]">
-            <i class="fa-solid fa-robot text-xl md:text-2xl drop-shadow-md"></i>
+        <button onclick="toggleChatbot()" class="w-14 h-14 md:w-14 md:h-14 rounded-full bg-gradient-to-br from-emerald-600 to-emerald-800 border-2 border-yellow-400 text-white hover:brightness-110 hover:scale-110 transition-all flex items-center justify-center shadow-[0_0_20px_rgba(250,204,21,0.5)] active:scale-95">
+            <i class="fa-solid fa-robot text-2xl drop-shadow-md"></i>
         </button>
     </div>
 
-    <div id="chatbot-window" class="fixed bottom-0 right-0 md:bottom-24 md:right-6 w-full md:w-[380px] h-[75dvh] md:h-[500px] bg-slate-900 border-t md:border-2 border-emerald-600/60 rounded-t-2xl md:rounded-2xl flex-col hidden z-[60] shadow-[0_10px_40px_rgba(16,185,129,0.3)] overflow-hidden transition-transform transform translate-y-full md:translate-y-0">
+    <div id="chatbot-window" class="fixed bottom-0 right-0 md:bottom-24 md:right-6 w-full md:w-[390px] h-[82dvh] md:h-[520px] bg-slate-900 border-t md:border-2 border-emerald-600/60 rounded-t-2xl md:rounded-2xl flex-col hidden z-[60] shadow-[0_10px_40px_rgba(16,185,129,0.3)] overflow-hidden transition-all duration-300 transform translate-y-full md:translate-y-0">
         
         <div class="bg-slate-950 p-3 md:p-4 border-b border-emerald-800 flex justify-between items-center shrink-0 shadow-sm">
             <div class="flex items-center gap-2.5 md:gap-3">
@@ -195,43 +219,43 @@
                     </p>
                 </div>
             </div>
-            <div class="flex gap-2 md:gap-3 items-center bg-slate-900 px-2 py-1 rounded-lg border border-emerald-800/50">
+            <div class="flex gap-2.5 items-center bg-slate-900 px-2.5 py-1.5 rounded-lg border border-emerald-800/50">
                 <button onclick="toggleFullScreen()" class="text-emerald-500 hover:text-yellow-400 transition p-1" title="Toggle Fullscreen">
-                    <i id="icon-fs-chat" class="fa-solid fa-expand text-base md:text-lg"></i>
+                    <i id="icon-fs-chat" class="fa-solid fa-expand text-base"></i>
                 </button>
                 <div class="w-px h-4 bg-emerald-800"></div>
                 <button onclick="toggleChatbot()" class="text-emerald-500 hover:text-rose-400 transition p-1" title="Tutup">
-                    <i class="fa-solid fa-chevron-down md:fa-xmark text-base md:text-lg"></i>
+                    <i class="fa-solid fa-chevron-down md:fa-xmark text-lg"></i>
                 </button>
             </div>
         </div>
         
-        <div id="chat-messages" class="flex-1 p-3 md:p-4 overflow-y-auto space-y-3 md:space-y-4 font-mono text-[10px] md:text-xs text-slate-200 bg-[#0f172a] custom-scrollbar bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPgo8cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjMGYxNzJhIj48L3JlY3Q+CjxwYXRoIGQ9Ik0wIDBMOCA4Wk04IDBMMCA4WiIgc3Ryb2tlPSIjMTAzNjI3IiBzdHJva2Utd2lkdGg9IjEiPjwvcGF0aD4KPC9zdmc+')]">
+        <div id="chat-messages" class="flex-1 p-3 md:p-4 overflow-y-auto space-y-3.5 font-mono text-[11px] md:text-xs text-slate-200 bg-[#0f172a] custom-scrollbar bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPgo8cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjMGYxNzJhIj48L3JlY3Q+CjxwYXRoIGQ9Ik0wIDBMOCA4Wk04IDBMMCA4WiIgc3Ryb2tlPSIjMTAzNjI3IiBzdHJva2Utd2lkdGg9IjEiPjwvcGF0aD4KPC9zdmc+')]">
             <div class="bg-emerald-950/60 p-3 md:p-4 rounded-xl border border-emerald-600/50 leading-relaxed shadow-lg">
                 <span class="text-yellow-400 block font-black mb-1.5 text-xs md:text-sm tracking-wide"><i class="fa-solid fa-microchip"></i> SYSTEM READY</span>
-                <span class="text-emerald-300 font-bold">Selamat datang!</span> Gunakan tombol navigasi di bawah untuk mengeksplorasi siaran TV dan melihat data pengembang.
+                <span class="text-emerald-300 font-bold">Selamat datang!</span> Gunakan tombol navigasi di bawah untuk mengeksplorasi siaran TV dan melihat data pengembang secara langsung di dalam chat.
             </div>
         </div>
 
-        <div class="p-2.5 bg-slate-950 border-t border-emerald-800 flex gap-2 overflow-x-auto hide-scrollbar shrink-0 shadow-inner">
-            <button onclick="botAction('developer')" class="whitespace-nowrap px-3 md:px-4 py-1.5 bg-yellow-500/20 hover:bg-yellow-500/40 text-yellow-400 text-[10px] md:text-xs rounded border border-yellow-500/50 font-black transition shadow-sm uppercase"><i class="fa-solid fa-code"></i> Programmer</button>
-            <div class="w-px bg-emerald-800 shrink-0 mx-1"></div>
-            <button onclick="botAction('id')" class="whitespace-nowrap px-3 md:px-4 py-1.5 bg-slate-900 hover:bg-slate-800 text-emerald-400 text-[10px] md:text-xs rounded border border-emerald-700 font-bold transition">TV Indonesia</button>
-            <button onclick="botAction('berita')" class="whitespace-nowrap px-3 md:px-4 py-1.5 bg-slate-900 hover:bg-slate-800 text-blue-400 text-[10px] md:text-xs rounded border border-emerald-700 font-bold transition">Berita</button>
-            <button onclick="botAction('olahraga')" class="whitespace-nowrap px-3 md:px-4 py-1.5 bg-slate-900 hover:bg-slate-800 text-orange-400 text-[10px] md:text-xs rounded border border-emerald-700 font-bold transition">Olahraga</button>
-            <button onclick="botAction('film')" class="whitespace-nowrap px-3 md:px-4 py-1.5 bg-slate-900 hover:bg-slate-800 text-rose-400 text-[10px] md:text-xs rounded border border-emerald-700 font-bold transition">Film</button>
-            <button onclick="botAction('musik')" class="whitespace-nowrap px-3 md:px-4 py-1.5 bg-slate-900 hover:bg-slate-800 text-purple-400 text-[10px] md:text-xs rounded border border-emerald-700 font-bold transition">Musik</button>
+        <div class="p-2 bg-slate-950 border-t border-emerald-800 flex gap-2 overflow-x-auto custom-scrollbar shrink-0 shadow-inner pb-3">
+            <button onclick="botAction('developer')" class="whitespace-nowrap px-4 py-2.5 bg-yellow-500/20 hover:bg-yellow-500/40 text-yellow-400 text-xs rounded border border-yellow-500/50 font-black transition shadow-sm uppercase active:scale-95 flex items-center gap-1.5"><i class="fa-solid fa-code"></i> Programmer</button>
+            <div class="w-px bg-emerald-800 shrink-0 mx-0.5"></div>
+            <button onclick="botAction('id')" class="whitespace-nowrap px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-emerald-400 text-xs rounded border border-emerald-700 font-bold transition active:scale-95">TV Indonesia</button>
+            <button onclick="botAction('berita')" class="whitespace-nowrap px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-blue-400 text-xs rounded border border-emerald-700 font-bold transition active:scale-95">Berita</button>
+            <button onclick="botAction('olahraga')" class="whitespace-nowrap px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-orange-400 text-xs rounded border border-emerald-700 font-bold transition active:scale-95">Olahraga</button>
+            <button onclick="botAction('film')" class="whitespace-nowrap px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-rose-400 text-xs rounded border border-emerald-700 font-bold transition active:scale-95">Film</button>
+            <button onclick="botAction('musik')" class="whitespace-nowrap px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-purple-400 text-xs rounded border border-emerald-700 font-bold transition active:scale-95">Musik</button>
         </div>
 
-        <div class="p-2 md:p-3 bg-slate-950 border-t border-emerald-900 flex gap-2 shrink-0">
-            <input type="text" id="chat-input" onkeydown="if(event.key==='Enter') sendChat()" placeholder="Beri instruksi terminal..." class="flex-1 bg-slate-900 border border-emerald-800 rounded-lg px-3 py-2 text-[10px] md:text-xs text-white focus:outline-none focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 shadow-inner font-mono">
-            <button onclick="sendChat()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3 md:px-4 rounded-lg text-xs transition shadow-md border border-emerald-500"><i class="fa-solid fa-paper-plane"></i></button>
+        <div class="p-2.5 bg-slate-950 border-t border-emerald-900 flex gap-2 shrink-0">
+            <input type="text" id="chat-input" onkeydown="if(event.key==='Enter') sendChat()" placeholder="Beri instruksi terminal..." class="flex-1 bg-slate-900 border border-emerald-800 rounded-lg px-3 py-2.5 text-xs text-white focus:outline-none focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 shadow-inner font-mono">
+            <button onclick="sendChat()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 rounded-lg text-sm transition shadow-md border border-emerald-500 active:scale-95"><i class="fa-solid fa-paper-plane"></i></button>
         </div>
     </div>
 
     <div id="helpModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-[99999] hidden items-center justify-center p-4 transition-opacity overflow-y-auto custom-scrollbar">
         <div class="bg-slate-900 border-2 border-emerald-500/60 rounded-2xl max-w-lg w-full p-5 md:p-6 shadow-[0_0_30px_rgba(16,185,129,0.2)] relative my-auto">
-            <button onclick="closeModal('helpModal')" class="absolute top-3 right-3 md:top-4 md:right-4 text-emerald-600 hover:text-yellow-400 transition p-2 bg-slate-950 rounded-full border border-emerald-800/50"><i class="fa-solid fa-xmark text-lg md:text-xl"></i></button>
+            <button onclick="closeModal('helpModal')" class="absolute top-3 right-3 text-emerald-600 hover:text-yellow-400 transition p-2 bg-slate-950 rounded-full border border-emerald-800/50"><i class="fa-solid fa-xmark text-lg"></i></button>
             <h3 class="text-base md:text-lg font-black text-yellow-400 uppercase border-b border-emerald-800/50 pb-3 mb-4 flex items-center gap-2"><i class="fa-solid fa-circle-question text-emerald-400"></i> Pusat Bantuan Sistem</h3>
             <div class="space-y-3 md:space-y-4 text-xs md:text-sm text-slate-300">
                 <div class="bg-slate-800/50 p-3 rounded-lg border border-emerald-700/40 shadow-inner">
@@ -251,7 +275,7 @@
                     <div class="text-xs font-mono space-y-1.5 text-emerald-200">
                         <p class="flex items-center gap-2"><i class="fa-brands fa-facebook w-4 text-emerald-400"></i> <a href="https://www.facebook.com/m.hartadi" target="_blank" class="hover:text-yellow-400 transition">facebook.com/m.hartadi</a></p>
                         <p class="flex items-center gap-2"><i class="fa-solid fa-globe w-4 text-emerald-400"></i> <a href="https://newbieonline7.blogspot.com/" target="_blank" class="hover:text-yellow-400 transition">newbieonline7.blogspot.com</a></p>
-                        <p class="flex items-center gap-2"><i class="fa-brands fa-whatsapp w-4 text-emerald-400"></i> <a href="https://wa.me/6282231036047" target="_blank" class="hover:text-yellow-400 transition font-bold">082231036047</a></p>
+                        <p class="flex items-center gap-2"><i class="fa-solid fa-phone w-4 text-emerald-400"></i> <a href="https://wa.me/6282231036047" target="_blank" class="hover:text-yellow-400 transition font-bold">082231036047</a></p>
                     </div>
                 </div>
             </div>
@@ -260,24 +284,24 @@
 
     <div id="creatorModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-[99999] hidden items-center justify-center p-4 transition-opacity overflow-y-auto custom-scrollbar">
         <div class="bg-slate-900 border-2 border-yellow-500/50 rounded-2xl max-w-sm w-full p-5 md:p-6 shadow-[0_0_30px_rgba(250,204,21,0.2)] relative my-auto">
-            <button onclick="closeModal('creatorModal')" class="absolute top-3 right-3 md:top-4 md:right-4 text-emerald-600 hover:text-yellow-400 transition p-2 bg-slate-950 rounded-full border border-emerald-800/50"><i class="fa-solid fa-xmark text-lg md:text-xl"></i></button>
+            <button onclick="closeModal('creatorModal')" class="absolute top-3 right-3 text-emerald-600 hover:text-yellow-400 transition p-2 bg-slate-950 rounded-full border border-emerald-800/50"><i class="fa-solid fa-xmark text-lg"></i></button>
             <div class="text-center mb-4 md:mb-5">
                 <i class="fa-solid fa-code text-3xl md:text-4xl text-emerald-400 mb-2 drop-shadow-[0_0_8px_rgba(16,185,129,0.5)]"></i>
                 <h3 class="text-xs md:text-sm font-black text-yellow-400 uppercase tracking-widest">Developer Credits</h3>
             </div>
-            <div class="bg-slate-950 p-4 rounded-xl border border-emerald-800/60 font-mono text-[10px] md:text-xs space-y-3 shadow-inner">
-                <div><span class="text-slate-500 block text-[9px] md:text-[10px] uppercase mb-0.5">Architect / AI Engineer</span><strong class="text-emerald-300 text-xs md:text-sm tracking-wide">Mohamad Hartadi</strong></div>
+            <div class="bg-slate-950 p-4 rounded-xl border border-emerald-800/60 font-mono text-xs space-y-3 shadow-inner">
+                <div><span class="text-slate-500 block text-[10px] uppercase mb-0.5">Architect / AI Engineer</span><strong class="text-emerald-300 text-sm tracking-wide">Mohamad Hartadi</strong></div>
                 <hr class="border-emerald-900/50">
                 <div class="flex items-center gap-3">
-                    <i class="fa-brands fa-facebook text-emerald-500 text-base md:text-lg w-5 text-center"></i>
+                    <i class="fa-brands fa-facebook text-emerald-500 text-lg w-5 text-center"></i>
                     <a href="https://www.facebook.com/m.hartadi" target="_blank" class="text-slate-300 hover:text-yellow-400 hover:underline break-all transition">facebook.com/m.hartadi</a>
                 </div>
                 <div class="flex items-center gap-3">
-                    <i class="fa-solid fa-globe text-yellow-500 text-base md:text-lg w-5 text-center"></i>
+                    <i class="fa-solid fa-globe text-yellow-500 text-lg w-5 text-center"></i>
                     <a href="https://newbieonline7.blogspot.com/" target="_blank" class="text-slate-300 hover:text-yellow-400 hover:underline break-all transition">newbieonline7.blogspot.com</a>
                 </div>
                 <div class="flex items-center gap-3">
-                    <i class="fa-brands fa-whatsapp text-emerald-500 text-base md:text-lg w-5 text-center"></i>
+                    <i class="fa-brands fa-whatsapp text-emerald-500 text-lg w-5 text-center"></i>
                     <a href="https://wa.me/6282231036047" target="_blank" class="text-slate-300 font-bold hover:text-yellow-400 hover:underline transition">082231036047</a>
                 </div>
             </div>
@@ -305,7 +329,7 @@
         const videoElement = document.getElementById('video-player');
         const channelListEl = document.getElementById('channel-list');
 
-        // INISIALISASI & LOADING
+        // INITIALIZATION SYSTEMS
         window.onload = () => {
             initClock();
             
@@ -334,11 +358,30 @@
             resetIdleTimer();
         };
 
-        // FULLSCREEN LOGIC
+        // THEME TOGGLE LOGIC (DARK/LIGHT)
+        function toggleTheme() {
+            const body = document.body;
+            const icon = document.getElementById('icon-theme');
+            const text = document.getElementById('text-theme');
+            
+            body.classList.toggle('light-theme');
+            
+            if (body.classList.contains('light-theme')) {
+                icon.classList.replace('fa-sun', 'fa-moon');
+                icon.classList.replace('text-yellow-400', 'text-indigo-600');
+                if(text) text.innerText = 'DARK';
+            } else {
+                icon.classList.replace('fa-moon', 'fa-sun');
+                icon.classList.replace('text-indigo-600', 'text-yellow-400');
+                if(text) text.innerText = 'LIGHT';
+            }
+        }
+
+        // FULLSCREEN TERMINAL LOGIC
         function toggleFullScreen() {
             if (!document.fullscreenElement) {
                 document.documentElement.requestFullscreen().catch(err => {
-                    console.log(`Error attempting to enable fullscreen: ${err.message}`);
+                    console.log(`Error: ${err.message}`);
                 });
             } else {
                 if (document.exitFullscreen) {
@@ -347,7 +390,7 @@
             }
         }
 
-        document.addEventListener('fullscreenchange', (event) => {
+        document.addEventListener('fullscreenchange', () => {
             const fsIconMain = document.getElementById('icon-fs-main');
             const fsTextMain = document.getElementById('text-fs-main');
             const fsIconChat = document.getElementById('icon-fs-chat');
@@ -363,7 +406,7 @@
             }
         });
 
-        // SISTEM JAM REAL-TIME
+        // CLOCK SYSTEM PLATFORM
         function initClock() {
             const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
             const months = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
@@ -385,7 +428,7 @@
             }, 1000);
         }
 
-        // SISTEM SCREENSAVER
+        // SCREENSAVER TIMEOUT
         function resetIdleTimer() {
             clearTimeout(idleTimer);
             const sc = document.getElementById('screensaver');
@@ -406,7 +449,7 @@
             }
         }
 
-        // SISTEM MODAL & SIDEBAR
+        // WINDOW MODAL DIALOGS
         function openModal(id) {
             const el = document.getElementById(id);
             el.classList.remove('hidden'); el.classList.add('flex');
@@ -422,7 +465,6 @@
             overlay.classList.toggle('hidden');
         }
 
-        // SISTEM CHATBOT
         function toggleChatbot() {
             const win = document.getElementById('chatbot-window');
             if (win.classList.contains('hidden')) {
@@ -438,17 +480,19 @@
             }
         }
 
-        function botAction(category) {
+        // CORE CHATBOT SHORTCUT ACTION
+        async function botAction(category) {
             const selector = document.getElementById('playlist-selector');
             let link = '';
+            let catName = '';
             
-            // Logika Shortcut Programmer Data
+            // Programmer Profile Shortcut Failsafe
             if(category === 'developer') {
                 const devInfo = `
                     <div class="border-b border-emerald-700/50 pb-2 mb-2">
                         <strong class="text-yellow-400 block tracking-wider uppercase text-[10px] md:text-xs"><i class="fa-solid fa-user-astronaut"></i> Profil Developer</strong>
                     </div>
-                    <div class="space-y-2 text-[10px] md:text-xs">
+                    <div class="space-y-2 text-[11px]">
                         <p><strong class="text-emerald-400">Nama:</strong> Mohamad Hartadi</p>
                         <p><strong class="text-emerald-400">FB:</strong> <a href="https://www.facebook.com/m.hartadi" target="_blank" class="text-slate-300 hover:text-yellow-400 hover:underline transition">facebook.com/m.hartadi</a></p>
                         <p><strong class="text-emerald-400">Blog:</strong> <a href="https://newbieonline7.blogspot.com/" target="_blank" class="text-slate-300 hover:text-yellow-400 hover:underline transition break-all">newbieonline7.blogspot.com</a></p>
@@ -456,33 +500,72 @@
                     </div>
                 `;
                 addChatMessage(devInfo, 'bot');
-                return; // Stop disini karena tidak perlu memuat playlist
+                return; 
             }
             
-            // Logika Kategori Playlist
-            if(category === 'id') {
-                link = 'https://iptv-org.github.io/iptv/countries/id.m3u';
-                selector.value = link;
-                addChatMessage(`Memuat Kategori: <b>TV Indonesia</b><br><a href="${link}" class="text-emerald-400 break-all underline mt-1 block">${link}</a>`, 'bot');
-            } else if(category === 'berita') {
-                link = 'https://iptv-org.github.io/iptv/categories/news.m3u';
-                selector.value = link;
-                addChatMessage(`Memuat Kategori: <b>Berita Global</b><br><a href="${link}" class="text-emerald-400 break-all underline mt-1 block">${link}</a>`, 'bot');
-            } else if(category === 'olahraga') {
-                link = 'https://iptv-org.github.io/iptv/categories/sports.m3u';
-                selector.value = link;
-                addChatMessage(`Memuat Kategori: <b>Olahraga</b><br><a href="${link}" class="text-emerald-400 break-all underline mt-1 block">${link}</a>`, 'bot');
-            } else if(category === 'film') {
-                link = 'https://iptv-org.github.io/iptv/categories/movies.m3u';
-                selector.value = link;
-                addChatMessage(`Memuat Kategori: <b>Film & Hiburan</b><br><a href="${link}" class="text-emerald-400 break-all underline mt-1 block">${link}</a>`, 'bot');
-            } else if(category === 'musik') {
-                link = 'https://iptv-org.github.io/iptv/categories/music.m3u';
-                selector.value = link;
-                addChatMessage(`Memuat Kategori: <b>Musik</b><br><a href="${link}" class="text-emerald-400 break-all underline mt-1 block">${link}</a>`, 'bot');
-            }
+            // Playlist Stream Category Direct Feed
+            if(category === 'id') { link = 'https://iptv-org.github.io/iptv/countries/id.m3u'; catName = 'TV Indonesia'; }
+            else if(category === 'berita') { link = 'https://iptv-org.github.io/iptv/categories/news.m3u'; catName = 'Berita'; }
+            else if(category === 'olahraga') { link = 'https://iptv-org.github.io/iptv/categories/sports.m3u'; catName = 'Olahraga'; }
+            else if(category === 'film') { link = 'https://iptv-org.github.io/iptv/categories/movies.m3u'; catName = 'Film & Hiburan'; }
+            else if(category === 'musik') { link = 'https://iptv-org.github.io/iptv/categories/music.m3u'; catName = 'Musik'; }
             
-            changePlaylist(); // Langsung eksekusi perubahan playlist
+            selector.value = link;
+            addChatMessage(`Membuka intersept telemetri untuk <b>${catName}</b>...`, 'bot');
+            
+            stopPlayer();
+            const success = await fetchPlaylist(link);
+
+            if(success && allChannels.length > 0) {
+                let listHtml = `<div class="mt-3 mb-1 max-h-[260px] overflow-y-auto custom-scrollbar bg-[#020617]/90 rounded-lg border border-emerald-800/60 p-1 space-y-1 shadow-inner relative">`;
+                
+                // Optimized touch lists rendered in chatbot container box
+                const limit = Math.min(allChannels.length, 75); 
+                for(let i = 0; i < limit; i++) {
+                    const ch = allChannels[i];
+                    const safeName = ch.name.replace(/'/g, "\\'").replace(/"/g, "&quot;");
+                    let safeUrl = "";
+                    try { safeUrl = ch.url.replace(/'/g, "\\'").replace(/"/g, "&quot;"); } catch(e) {}
+                    let safeLogo = "";
+                    try { if(ch.logo) safeLogo = ch.logo.replace(/'/g, "\\'").replace(/"/g, "&quot;"); } catch(e) {}
+                    
+                    listHtml += `
+                    <div onclick="playStreamChat('${safeName}', '${safeUrl}', '${safeLogo}')" class="flex items-center gap-3 p-2.5 hover:bg-emerald-950 cursor-pointer rounded border border-transparent hover:border-yellow-500/30 transition-all group active:bg-emerald-900/40">
+                        <div class="w-9 h-9 flex-shrink-0 flex items-center justify-center bg-slate-900 rounded border border-emerald-800/50 group-hover:border-yellow-400/60 shadow-sm overflow-hidden p-0.5">
+                            ${ch.logo ? `<img src="${ch.logo}" class="max-w-full max-h-full object-contain" onerror="this.outerHTML='<i class=\\'fa-solid fa-tv text-emerald-600 text-[10px]\\'></i>'">` : `<i class="fa-solid fa-tv text-emerald-600 text-xs"></i>`}
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <h4 class="truncate text-xs text-slate-200 group-hover:text-yellow-400 font-bold tracking-wide">${safeName}</h4>
+                            <p class="text-[10px] text-emerald-500 font-mono mt-0.5 truncate group-hover:text-emerald-300"><i class="fa-solid fa-circle-play text-[9px] mr-1"></i>Putar Saluran</p>
+                        </div>
+                    </div>`;
+                }
+                
+                if (allChannels.length > limit) {
+                    listHtml += `<div class="sticky bottom-0 p-2 text-center text-[10px] text-yellow-500 font-bold bg-[#020617] border-t border-emerald-900/60 mt-1 uppercase tracking-widest z-10 shadow-md">+ ${allChannels.length - limit} Saluran Lainnya di Panel Kiri</div>`;
+                }
+                listHtml += `</div>`;
+
+                addChatMessage(`<span class="text-emerald-400 font-bold"><i class="fa-solid fa-satellite-dish animate-pulse"></i> Transmisi Siap!</span><br>Daftar saluran <b>${catName}</b> berhasil dimuat di bawah ini:<br>${listHtml}`, 'bot');
+            } else {
+                addChatMessage(`<span class="text-rose-400 font-bold"><i class="fa-solid fa-triangle-exclamation"></i> Gangguan Sinyal</span><br>Gagal memuat basis data saluran. Coba lagi nanti.`, 'bot');
+            }
+        }
+
+        // CHATBOT LIST ITEM PLAYBACK TRIGGER FUNCTION
+        function playStreamChat(name, url, logo) {
+            let safeId = 'unknown';
+            try {
+                safeId = `ch-${btoa(url).replace(/[^a-zA-Z0-9]/g, '').substring(0, 15)}`;
+            } catch(e) {}
+            
+            playStream({name: name, url: url, logo: logo}, safeId);
+            addChatMessage(`Mengkoneksikan satelit langsung ke: <b class="text-yellow-400">${name}</b> <i class="fa-solid fa-satellite-dish fa-fade text-emerald-400 ml-1"></i>`, 'bot');
+            
+            // Autohide chatbot viewport box window constraints on micro screens
+            if(window.innerWidth < 768) {
+                setTimeout(() => toggleChatbot(), 1000);
+            }
         }
 
         function sendChat() {
@@ -494,21 +577,21 @@
             input.value = '';
             
             setTimeout(() => {
-                addChatMessage("Daftar saluran baru telah dimuat di panel utama. Anda dapat terus memilih kategori menggunakan tombol pintasan.", 'bot');
+                addChatMessage("Terminal mendeteksi instruksi khusus. Silakan gunakan tombol pintasan kategori di bawah panel chat untuk memuat daftar siaran langsung secara instan.", 'bot');
             }, 600);
         }
 
         function addChatMessage(msg, sender) {
             const container = document.getElementById('chat-messages');
             if(sender === 'user') {
-                container.innerHTML += `<div class="bg-emerald-800/80 p-2.5 md:p-3 text-right text-yellow-100 ml-auto max-w-[85%] rounded-xl rounded-tr-sm mb-3 shadow-md border border-emerald-600/50 notranslate">${msg}</div>`;
+                container.innerHTML += `<div class="bg-emerald-800/80 p-3 text-right text-yellow-100 ml-auto max-w-[85%] rounded-xl rounded-tr-sm mb-3 shadow-md border border-emerald-600/50 notranslate">${msg}</div>`;
             } else {
                 container.innerHTML += `<div class="bg-slate-800/90 p-3 md:p-4 text-slate-300 border border-emerald-700/50 rounded-xl rounded-tl-sm mb-3 shadow-lg">${msg}</div>`;
             }
             container.scrollTop = container.scrollHeight;
         }
 
-        // SISTEM PARSER IPTV M3U
+        // PARSER M3U ENGINE CORE
         function changePlaylist() {
             stopPlayer();
             fetchPlaylist(document.getElementById('playlist-selector').value);
@@ -520,7 +603,7 @@
                 document.getElementById('channel-count').innerText = "Memproses...";
 
                 const response = await fetch(url);
-                if (!response.ok) throw new Error('Network response was not ok');
+                if (!response.ok) throw new Error('Network response failure');
                 const data = await response.text();
                 
                 const lines = data.split('\n');
@@ -545,11 +628,13 @@
                 document.getElementById('channel-count').innerText = `${allChannels.length} CHANNELS`;
                 document.getElementById('search-input').value = '';
                 renderChannels(allChannels);
+                return true;
 
             } catch (error) {
                 console.error(error);
                 channelListEl.innerHTML = '<div class="p-4 text-center text-rose-500 font-bold"><i class="fa-solid fa-triangle-exclamation text-2xl mb-2"></i><br><span class="text-xs md:text-sm">Koneksi ke database gagal.</span></div>';
                 document.getElementById('channel-count').innerText = "ERROR";
+                return false;
             }
         }
 
@@ -562,7 +647,7 @@
         function renderChannels(channels) {
             channelListEl.innerHTML = '';
             if (channels.length === 0) {
-                channelListEl.innerHTML = '<div class="p-4 text-center text-slate-500 text-xs md:text-sm">Hasil tidak ditemukan.</div>';
+                channelListEl.innerHTML = '<div class="p-4 text-center text-slate-500 text-sm">Hasil tidak ditemukan.</div>';
                 return;
             }
 
@@ -572,19 +657,19 @@
                 const li = document.createElement('li');
                 const safeId = btoa(ch.url).replace(/[^a-zA-Z0-9]/g, '').substring(0, 15);
                 li.id = `ch-${safeId}`;
-                li.className = 'channel-item flex items-center gap-2.5 md:gap-3 px-2 md:px-3 py-2 md:py-2.5 rounded-lg cursor-pointer text-slate-300 hover:bg-emerald-900/40 hover:text-white transition-colors border border-transparent';
+                li.className = 'channel-item flex items-center gap-3 px-3 py-2.5 rounded-lg cursor-pointer text-slate-300 hover:bg-emerald-900/40 hover:text-white transition-colors border border-transparent active:bg-emerald-950';
                 li.onclick = () => playStream(ch, li.id);
                 
                 const logoHtml = ch.logo 
-                    ? `<img src="${ch.logo}" onerror="this.outerHTML='<i class=\\'fa-solid fa-tv text-emerald-700 text-sm md:text-base\\'></i>'" class="w-6 h-6 md:w-7 md:h-7 object-contain bg-slate-950 rounded p-0.5 border border-emerald-800/50">` 
-                    : `<i class="fa-solid fa-tv text-emerald-700 text-sm md:text-base"></i>`;
+                    ? `<img src="${ch.logo}" onerror="this.outerHTML='<i class=\\'fa-solid fa-tv text-emerald-700 text-base\\'></i>'" class="w-7 h-7 object-contain bg-slate-950 rounded p-0.5 border border-emerald-800/50">` 
+                    : `<i class="fa-solid fa-tv text-emerald-700 text-base"></i>`;
 
-                li.innerHTML = `<div class="w-6 md:w-8 flex-shrink-0 flex justify-center">${logoHtml}</div><div class="truncate text-xs md:text-sm font-bold tracking-wide">${ch.name}</div>`;
+                li.innerHTML = `<div class="w-8 flex-shrink-0 flex justify-center">${logoHtml}</div><div class="truncate text-sm font-bold tracking-wide">${ch.name}</div>`;
                 channelListEl.appendChild(li);
             }
         }
 
-        // SISTEM PLAYER HLS.js
+        // HLS MEDIA BROADCAST PLAYER CONTROL SYSTEM
         function playStream(channel, elementId) {
             document.querySelectorAll('.channel-item').forEach(el => el.classList.remove('active-channel'));
             const activeEl = document.getElementById(elementId);
@@ -599,7 +684,7 @@
                 document.getElementById('channel-logo-container').style.display = 'none';
             }
 
-            document.getElementById('status-dot').className = 'w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-yellow-400 animate-pulse shrink-0';
+            document.getElementById('status-dot').className = 'w-2.5 h-2.5 rounded-full bg-yellow-400 animate-pulse shrink-0';
             document.getElementById('status-text').innerText = 'Mengunci Sinyal Telemetri...';
             document.getElementById('status-text').className = 'text-yellow-400 font-bold truncate';
 
@@ -616,7 +701,7 @@
                 
                 hls.on(Hls.Events.MANIFEST_PARSED, function () {
                     streamSuccess();
-                    videoElement.play().catch(e => console.log('Autoplay ditahan.'));
+                    videoElement.play().catch(() => console.log('Autoplay blocked.'));
                 });
 
                 hls.on(Hls.Events.ERROR, function (event, data) {
@@ -647,14 +732,14 @@
 
         function streamSuccess() {
             document.getElementById('loading-indicator').classList.add('hidden');
-            document.getElementById('status-dot').className = 'w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.8)] shrink-0';
+            document.getElementById('status-dot').className = 'w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.8)] shrink-0';
             document.getElementById('status-text').innerText = 'Online / Stabil';
             document.getElementById('status-text').className = 'text-emerald-400 font-bold truncate';
         }
 
         function streamError() {
             document.getElementById('loading-indicator').classList.add('hidden');
-            document.getElementById('status-dot').className = 'w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-rose-500 shadow-[0_0_10px_rgba(244,63,94,0.8)] shrink-0';
+            document.getElementById('status-dot').className = 'w-2.5 h-2.5 rounded-full bg-rose-500 shadow-[0_0_10px_rgba(244,63,94,0.8)] shrink-0';
             document.getElementById('status-text').innerText = 'Terblokir CORS / Offline';
             document.getElementById('status-text').className = 'text-rose-400 font-bold animate-pulse truncate';
         }
@@ -670,7 +755,7 @@
             document.getElementById('loading-indicator').classList.add('hidden');
             document.getElementById('channel-logo-container').style.display = 'none';
             document.getElementById('now-playing-title').innerText = 'Mode Siaga';
-            document.getElementById('status-dot').className = 'w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-slate-600 shrink-0';
+            document.getElementById('status-dot').className = 'w-2.5 h-2.5 rounded-full bg-slate-600 shrink-0';
             document.getElementById('status-text').innerText = 'Menunggu instruksi pemutaran';
             document.getElementById('status-text').className = 'text-slate-500 font-bold truncate tracking-wide';
 
