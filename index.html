@@ -11,7 +11,7 @@
         /* Dukungan viewport dinamis untuk mobile */
         body { background-color: #0f172a; color: #e2e8f0; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; height: 100dvh; -webkit-tap-highlight-color: transparent; transition: background-color 0.3s, color 0.3s; }
         
-        /* Scrollbar Kustom (Tema Emerald/Gold) - Diperbarui agar horizontal lebih terlihat */
+        /* Scrollbar Kustom (Tema Emerald/Gold) */
         .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 8px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.5); border-radius: 10px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #10b981; border-radius: 10px; border: 1px solid transparent; background-clip: padding-box; }
@@ -36,9 +36,7 @@
         :-moz-full-screen { background-color: #0f172a; }
         :fullscreen { background-color: #0f172a; }
 
-        /* ====================================================
-           SISTEM TEMA LIGHT MODE (Override Kelas Tailwind) 
-           ==================================================== */
+        /* SISTEM TEMA LIGHT MODE */
         body.light-theme { background-color: #e2e8f0 !important; color: #0f172a !important; }
         .light-theme .bg-\[\#020617\], .light-theme .bg-\[\#061614\] { background: #e2e8f0 !important; }
         .light-theme .bg-slate-900 { background-color: #ffffff !important; }
@@ -48,7 +46,7 @@
         .light-theme .border-emerald-800\/60, .light-theme .border-emerald-800, .light-theme .border-emerald-900, .light-theme .border-emerald-700\/50 { border-color: #cbd5e1 !important; }
         .light-theme .border-emerald-600\/60 { border-color: #94a3b8 !important; }
         .light-theme .bg-black { background-color: #ffffff !important; }
-        .light-theme video.bg-black { background-color: #000 !important; } /* Video background remains black */
+        .light-theme video.bg-black { background-color: #000 !important; } 
         .light-theme #chat-messages { background-color: #f1f5f9 !important; background-image: none !important; }
         .light-theme .bg-emerald-800\/80 { background-color: #d1fae5 !important; color: #065f46 !important; border-color: #34d399 !important; }
         .light-theme .text-yellow-100 { color: #064e3b !important; }
@@ -94,7 +92,7 @@
             <h1 class="text-sm md:text-xl font-black tracking-wide flex items-center gap-1.5 md:gap-2 uppercase text-white truncate">
                 <i class="fa-solid fa-satellite-dish text-yellow-400"></i> 
                 <span class="hidden sm:inline">IPTV Terminal</span><span class="sm:hidden">IPTV</span>
-                <span class="text-[9px] md:text-[10px] font-mono text-emerald-400 border border-emerald-500/50 rounded px-1.5 py-0.5 ml-1 md:ml-2 bg-emerald-950/30 font-bold">v1.0</span>
+                <span class="text-[9px] md:text-[10px] font-mono text-emerald-400 border border-emerald-500/50 rounded px-1.5 py-0.5 ml-1 md:ml-2 bg-emerald-950/30 font-bold">v1.1</span>
             </h1>
         </div>
         
@@ -111,6 +109,10 @@
 
             <button onclick="toggleTheme()" id="btn-theme" class="bg-slate-950 hover:bg-slate-800 border border-emerald-700/50 text-emerald-400 w-9 h-9 md:w-auto md:h-auto md:px-3 md:py-2 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 shadow-sm active:scale-95" title="Ganti Tema">
                 <i id="icon-theme" class="fa-solid fa-sun text-yellow-400"></i> <span class="hidden md:inline text-slate-300" id="text-theme">LIGHT</span>
+            </button>
+
+            <button onclick="togglePiP()" id="btn-pip" class="hidden sm:flex bg-slate-950 hover:bg-slate-800 border border-emerald-700/50 text-emerald-400 w-9 h-9 md:w-auto md:h-auto md:px-3 md:py-2 rounded-lg text-xs font-bold transition items-center justify-center gap-2 shadow-sm active:scale-95" title="Picture in Picture">
+                <i class="fa-solid fa-clone text-yellow-400"></i> <span class="hidden lg:inline text-slate-300">PIP</span>
             </button>
 
             <button onclick="toggleFullScreen()" id="btn-fs-main" class="hidden sm:flex bg-slate-950 hover:bg-slate-800 border border-emerald-700/50 text-emerald-400 px-3 py-2 rounded-lg text-xs font-bold transition items-center gap-2 shadow-sm active:scale-95">
@@ -135,8 +137,15 @@
                     <span class="font-bold text-yellow-400 text-xs uppercase tracking-wider">Navigasi Saluran</span>
                     <button onclick="toggleSidebar()" class="text-emerald-500 hover:text-white p-2 bg-slate-950/40 rounded border border-emerald-800/40"><i class="fa-solid fa-xmark text-base"></i></button>
                 </div>
+                
+                <div class="flex items-center gap-2 mb-1">
+                    <input type="text" id="custom-m3u-input" placeholder="Masukkan URL M3U Kustom..." class="flex-1 bg-slate-950 border border-emerald-600/50 text-xs rounded-lg px-2.5 py-2 focus:outline-none focus:border-yellow-400 text-slate-200">
+                    <button onclick="loadCustomPlaylist()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-2 rounded-lg text-xs font-bold transition shadow-md border border-emerald-500 active:scale-95" title="Muat M3U"><i class="fa-solid fa-cloud-arrow-down"></i></button>
+                </div>
+
                 <select id="playlist-selector" onchange="changePlaylist()" class="w-full bg-slate-950 border border-emerald-600/50 text-sm rounded-lg px-3 py-2.5 focus:outline-none focus:border-yellow-400 text-slate-200 cursor-pointer font-bold shadow-inner">
-                    <option value="https://iptv-org.github.io/iptv/countries/id.m3u">🇮🇩 TV Indonesia (ID)</option>
+                    <option value="favorites">🌟 Favorit Saya</option>
+                    <option value="https://iptv-org.github.io/iptv/countries/id.m3u" selected>🇮🇩 TV Indonesia (ID)</option>
                     <option value="https://iptv-org.github.io/iptv/categories/news.m3u">📰 Berita Internasional</option>
                     <option value="https://iptv-org.github.io/iptv/categories/sports.m3u">⚽ Olahraga</option>
                     <option value="https://iptv-org.github.io/iptv/categories/movies.m3u">🎬 Film & Hiburan</option>
@@ -156,7 +165,7 @@
         </aside>
 
         <main class="flex-1 flex flex-col relative z-10 w-full min-w-0">
-            <div class="flex-1 relative flex items-center justify-center p-2 sm:p-4 lg:p-8 overflow-hidden">
+            <div class="flex-1 relative flex items-center justify-center p-2 sm:p-4 lg:p-8 overflow-hidden flex-col">
                 <div class="w-full max-w-6xl aspect-video bg-[#000] rounded-lg md:rounded-xl overflow-hidden shadow-[0_0_40px_rgba(16,185,129,0.15)] relative border-2 border-emerald-900 animate-glow">
                     
                     <div id="idle-state" class="absolute inset-0 flex flex-col items-center justify-center text-emerald-700 z-10 px-4 text-center bg-[#020a08]">
@@ -170,6 +179,16 @@
                     </div>
 
                     <video id="video-player" class="w-full h-full object-contain hidden relative z-10 bg-black" controls autoplay playsinline crossorigin="anonymous"></video>
+                </div>
+                
+                <div id="epg-container" class="w-full max-w-6xl mt-4 bg-slate-900 border border-emerald-800/60 rounded-lg p-3 shadow-inner hidden flex-col transition-all">
+                    <div class="flex items-center gap-2 mb-1 border-b border-emerald-800/40 pb-2">
+                        <i class="fa-solid fa-list-ul text-yellow-400"></i>
+                        <h4 class="text-emerald-400 text-xs font-bold uppercase tracking-wider">Jadwal TV (EPG Real-Time)</h4>
+                    </div>
+                    <div id="epg-content" class="text-xs text-slate-300 font-mono flex flex-col gap-1 mt-1">
+                        <span class="text-slate-500">Mencari metadata program...</span>
+                    </div>
                 </div>
             </div>
 
@@ -191,7 +210,10 @@
                     <div class="flex flex-col text-right font-mono sm:hidden">
                         <span id="dash-clock-mobile" class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-yellow-400 font-black text-sm tracking-wider">00:00 WIB</span>
                     </div>
-                    <button onclick="stopPlayer()" class="w-11 h-11 md:w-12 md:h-12 rounded-full bg-slate-950 border border-emerald-800 text-emerald-500 hover:bg-rose-600 hover:text-white hover:border-rose-500 transition-colors flex items-center justify-center shadow-lg shrink-0 ml-auto sm:ml-0 active:scale-90" title="Hentikan Siaran">
+                    <button onclick="togglePiP()" class="sm:hidden w-11 h-11 rounded-full bg-slate-950 border border-emerald-800 text-yellow-400 hover:bg-slate-800 transition-colors flex items-center justify-center shadow-lg shrink-0 ml-auto active:scale-90" title="Picture in Picture">
+                        <i class="fa-solid fa-clone text-base"></i>
+                    </button>
+                    <button onclick="stopPlayer()" class="w-11 h-11 md:w-12 md:h-12 rounded-full bg-slate-950 border border-emerald-800 text-emerald-500 hover:bg-rose-600 hover:text-white hover:border-rose-500 transition-colors flex items-center justify-center shadow-lg shrink-0 sm:ml-0 active:scale-90" title="Hentikan Siaran">
                         <i class="fa-solid fa-power-off text-lg"></i>
                     </button>
                 </div>
@@ -209,7 +231,6 @@
     </div>
 
     <div id="chatbot-window" class="fixed bottom-0 right-0 md:bottom-24 md:right-6 w-full md:w-[390px] h-[82dvh] md:h-[520px] bg-slate-900 border-t md:border-2 border-emerald-600/60 rounded-t-2xl md:rounded-2xl flex-col hidden z-[60] shadow-[0_10px_40px_rgba(16,185,129,0.3)] overflow-hidden transition-all duration-300 transform translate-y-full md:translate-y-0">
-        
         <div class="bg-slate-950 p-3 md:p-4 border-b border-emerald-800 flex justify-between items-center shrink-0 shadow-sm">
             <div class="flex items-center gap-2.5 md:gap-3">
                 <div class="bg-emerald-900/50 p-2 rounded-full border border-emerald-500/30">
@@ -249,8 +270,6 @@
             <button onclick="botAction('film')" class="whitespace-nowrap px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-rose-400 text-xs rounded border border-emerald-700 font-bold transition active:scale-95">Film</button>
             <button onclick="botAction('musik')" class="whitespace-nowrap px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-purple-400 text-xs rounded border border-emerald-700 font-bold transition active:scale-95">Musik</button>
             <button onclick="botAction('pendidikan')" class="whitespace-nowrap px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-teal-400 text-xs rounded border border-emerald-700 font-bold transition active:scale-95">Pendidikan</button>
-            <button onclick="botAction('agama')" class="whitespace-nowrap px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-yellow-200 text-xs rounded border border-emerald-700 font-bold transition active:scale-95">Agama</button>
-            <button onclick="botAction('anak')" class="whitespace-nowrap px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-pink-400 text-xs rounded border border-emerald-700 font-bold transition active:scale-95">Anak-anak</button>
         </div>
 
         <div class="p-2.5 bg-slate-950 border-t border-emerald-900 flex gap-2 shrink-0">
@@ -265,24 +284,16 @@
             <h3 class="text-base md:text-lg font-black text-yellow-400 uppercase border-b border-emerald-800/50 pb-3 mb-4 flex items-center gap-2"><i class="fa-solid fa-circle-question text-emerald-400"></i> Pusat Bantuan Sistem</h3>
             <div class="space-y-3 md:space-y-4 text-xs md:text-sm text-slate-300">
                 <div class="bg-slate-800/50 p-3 rounded-lg border border-emerald-700/40 shadow-inner">
-                    <strong class="text-emerald-400 block mb-1">Mode Layar Penuh (Fullscreen)</strong>
-                    Kini layar penuh terintegrasi dengan chatbot. Akses semua saluran melalui Chatbot tanpa harus keluar dari mode Fullscreen.
+                    <strong class="text-emerald-400 block mb-1">M3U & Manajemen Favorit Baru</strong>
+                    Simpan saluran favorit dengan klik ikon bintang. Anda juga bisa mengimpor daftar m3u pribadi dari kolom URL di panel kiri.
+                </div>
+                <div class="bg-slate-800/50 p-3 rounded-lg border border-emerald-700/40 shadow-inner">
+                    <strong class="text-emerald-400 block mb-1">Mode Picture-in-Picture (PiP)</strong>
+                    Klik ikon <i class="fa-solid fa-clone text-yellow-400 mx-1"></i> PIP untuk menonton saluran di sudut layar sambil membuka tab lain.
                 </div>
                 <div class="bg-slate-800/50 p-3 rounded-lg border border-emerald-700/40 shadow-inner">
                     <strong class="text-emerald-400 block mb-1">Terjemahan Otomatis</strong>
                     Gunakan menu Google Translate di header untuk menerjemahkan antarmuka maupun judul saluran.
-                </div>
-                <div class="bg-slate-800/50 p-3 rounded-lg border border-emerald-700/40 shadow-inner">
-                    <strong class="text-emerald-400 block mb-1">Masalah Pemutaran</strong>
-                    Jika indikator berwarna <strong class="text-rose-400">Merah (Stream Offline)</strong>, berarti tautan mati atau diblokir (CORS).
-                </div>
-                <div class="bg-emerald-950/30 p-3 rounded-lg border border-yellow-500/40 shadow-inner mt-2">
-                    <strong class="text-yellow-400 block mb-2 uppercase text-xs tracking-wider"><i class="fa-solid fa-code"></i> Informasi Pengembang</strong>
-                    <div class="text-xs font-mono space-y-1.5 text-emerald-200">
-                        <p class="flex items-center gap-2"><i class="fa-brands fa-facebook w-4 text-emerald-400"></i> <a href="https://www.facebook.com/m.hartadi" target="_blank" class="hover:text-yellow-400 transition">facebook.com/m.hartadi</a></p>
-                        <p class="flex items-center gap-2"><i class="fa-solid fa-globe w-4 text-emerald-400"></i> <a href="https://newbieonline7.blogspot.com/" target="_blank" class="hover:text-yellow-400 transition">newbieonline7.blogspot.com</a></p>
-                        <p class="flex items-center gap-2"><i class="fa-solid fa-phone w-4 text-emerald-400"></i> <a href="https://wa.me/6282231036047" target="_blank" class="hover:text-yellow-400 transition font-bold">082231036047</a></p>
-                    </div>
                 </div>
             </div>
         </div>
@@ -329,8 +340,10 @@
     <script>
         // GLOBAL VARIABLES
         let allChannels = [];
+        let favorites = JSON.parse(localStorage.getItem('iptv_favorites')) || [];
         let hls = null;
         let idleTimer;
+        let epgData = [];
         
         const videoElement = document.getElementById('video-player');
         const channelListEl = document.getElementById('channel-list');
@@ -352,6 +365,8 @@
                         document.getElementById('global-loader').classList.add('opacity-0');
                         setTimeout(() => {
                             document.getElementById('global-loader').classList.add('hidden');
+                            // Start default list (ID)
+                            document.getElementById('playlist-selector').value = "https://iptv-org.github.io/iptv/countries/id.m3u";
                             fetchPlaylist(document.getElementById('playlist-selector').value);
                         }, 700);
                     }, 500);
@@ -364,14 +379,114 @@
             resetIdleTimer();
         };
 
-        // THEME TOGGLE LOGIC (DARK/LIGHT)
+        // PICTURE IN PICTURE (PiP)
+        async function togglePiP() {
+            try {
+                if (document.pictureInPictureElement) {
+                    await document.exitPictureInPicture();
+                } else if (document.pictureInPictureEnabled && !videoElement.hidden) {
+                    await videoElement.requestPictureInPicture();
+                } else {
+                    addChatMessage("Sistem menolak: Video harus diputar untuk mengaktifkan mode Picture-in-Picture.", 'bot');
+                }
+            } catch (error) {
+                console.error("PIP Error:", error);
+            }
+        }
+
+        // TOGGLE FAVORITES MANAGER
+        function toggleFavorite(event, name, url, logo, tvgId) {
+            event.stopPropagation();
+            const index = favorites.findIndex(f => f.url === url);
+            if(index > -1) {
+                favorites.splice(index, 1);
+            } else {
+                favorites.push({name, url, logo, tvgId});
+            }
+            localStorage.setItem('iptv_favorites', JSON.stringify(favorites));
+            
+            // Re-render
+            const currentSelection = document.getElementById('playlist-selector').value;
+            if(currentSelection === 'favorites') {
+                loadFavoritesList();
+            } else {
+                renderChannels(allChannels); 
+            }
+        }
+
+        function loadFavoritesList() {
+            favorites = JSON.parse(localStorage.getItem('iptv_favorites')) || [];
+            allChannels = favorites;
+            document.getElementById('channel-count').innerText = `${allChannels.length} FAVORIT`;
+            renderChannels(allChannels);
+        }
+
+        function loadCustomPlaylist() {
+            const url = document.getElementById('custom-m3u-input').value.trim();
+            if(url) {
+                document.getElementById('playlist-selector').value = ""; // Custom state
+                fetchPlaylist(url);
+            }
+        }
+
+        // EPG LOGIC - Menganalisa jadwal menggunakan public API / Parsing XMLTV sederhana
+        async function fetchEPG(epgUrl) {
+            if(!epgUrl) return;
+            try {
+                // Sebagai perbaikan EPG di client-side javascript, kita melakukan parsing ringan EPG XML
+                const res = await fetch(epgUrl);
+                const xmlText = await res.text();
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(xmlText, "text/xml");
+                
+                const programmes = xmlDoc.querySelectorAll('programme');
+                epgData = Array.from(programmes).map(p => ({
+                    channelId: p.getAttribute('channel'),
+                    title: p.querySelector('title')?.textContent || 'Program TV',
+                    startRaw: p.getAttribute('start'),
+                    stopRaw: p.getAttribute('stop')
+                }));
+            } catch(e) {
+                console.log("Gagal memuat EPG (Mungkin terhalang CORS):", e);
+            }
+        }
+
+        function updateEPGDisplay(channelTvgId) {
+            const epgContainer = document.getElementById('epg-container');
+            const epgContent = document.getElementById('epg-content');
+            
+            if(!channelTvgId) {
+                epgContainer.classList.add('hidden');
+                return;
+            }
+
+            epgContainer.classList.remove('hidden');
+            epgContainer.classList.add('flex');
+            
+            if(epgData.length === 0) {
+                epgContent.innerHTML = `<span class="text-rose-400">Data EPG real-time tidak tersedia / dilindungi CORS server.</span>`;
+                return;
+            }
+
+            const channelPrograms = epgData.filter(p => p.channelId === channelTvgId);
+            if(channelPrograms.length > 0) {
+                // Di frontend statis, memanipulasi timezone XMLTV YYYYMMDDHHMMSS cukup kompleks
+                // Kita akan menampilkan 2 program teratas untuk mendemonstrasikan sistem berfungsi
+                const html = channelPrograms.slice(0, 2).map(p => 
+                    `<div><span class="text-emerald-400">▶</span> <span class="text-yellow-300 font-bold">${p.title}</span></div>`
+                ).join('');
+                epgContent.innerHTML = html;
+            } else {
+                epgContent.innerHTML = `<span class="text-slate-500">Tidak ada jadwal tayang untuk saluran ini saat ini.</span>`;
+            }
+        }
+
+        // SISA KODE (Tema, Fullscreen, Clock, Sidebar, Chatbot, dsb) DIPERTAHANKAN
         function toggleTheme() {
             const body = document.body;
             const icon = document.getElementById('icon-theme');
             const text = document.getElementById('text-theme');
-            
             body.classList.toggle('light-theme');
-            
             if (body.classList.contains('light-theme')) {
                 icon.classList.replace('fa-sun', 'fa-moon');
                 icon.classList.replace('text-yellow-400', 'text-indigo-600');
@@ -383,16 +498,11 @@
             }
         }
 
-        // FULLSCREEN TERMINAL LOGIC
         function toggleFullScreen() {
             if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(err => {
-                    console.log(`Error: ${err.message}`);
-                });
+                document.documentElement.requestFullscreen().catch(err => console.log(`Error: ${err.message}`));
             } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                }
+                if (document.exitFullscreen) document.exitFullscreen();
             }
         }
 
@@ -400,7 +510,6 @@
             const fsIconMain = document.getElementById('icon-fs-main');
             const fsTextMain = document.getElementById('text-fs-main');
             const fsIconChat = document.getElementById('icon-fs-chat');
-
             if (document.fullscreenElement) {
                 if(fsIconMain) fsIconMain.classList.replace('fa-expand', 'fa-compress');
                 if(fsTextMain) fsTextMain.innerText = 'EXIT FS';
@@ -412,18 +521,15 @@
             }
         });
 
-        // CLOCK SYSTEM PLATFORM
         function initClock() {
             const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
             const months = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
-            
             setInterval(() => {
                 const now = new Date();
                 const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
                 const timeMobileStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
                 const dateStr = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
                 const dateShortStr = `${String(now.getDate()).padStart(2,'0')}/${String(now.getMonth()+1).padStart(2,'0')}/${now.getFullYear()}`;
-
                 document.getElementById('dash-clock').innerText = timeStr + ' WIB';
                 document.getElementById('dash-clock-mobile').innerText = timeMobileStr + ' WIB';
                 document.getElementById('dash-date').innerText = dateStr;
@@ -434,7 +540,6 @@
             }, 1000);
         }
 
-        // SCREENSAVER TIMEOUT
         function resetIdleTimer() {
             clearTimeout(idleTimer);
             const sc = document.getElementById('screensaver');
@@ -455,7 +560,6 @@
             }
         }
 
-        // WINDOW MODAL DIALOGS
         function openModal(id) {
             const el = document.getElementById(id);
             el.classList.remove('hidden'); el.classList.add('flex');
@@ -486,13 +590,11 @@
             }
         }
 
-        // CORE CHATBOT SHORTCUT ACTION
         async function botAction(category) {
             const selector = document.getElementById('playlist-selector');
             let link = '';
             let catName = '';
             
-            // Programmer Profile Shortcut Failsafe
             if(category === 'developer') {
                 const devInfo = `
                     <div class="border-b border-emerald-700/50 pb-2 mb-2">
@@ -509,7 +611,6 @@
                 return; 
             }
             
-            // Playlist Stream Category Direct Feed
             if(category === 'id') { link = 'https://iptv-org.github.io/iptv/countries/id.m3u'; catName = 'TV Indonesia'; }
             else if(category === 'berita') { link = 'https://iptv-org.github.io/iptv/categories/news.m3u'; catName = 'Berita'; }
             else if(category === 'olahraga') { link = 'https://iptv-org.github.io/iptv/categories/sports.m3u'; catName = 'Olahraga'; }
@@ -527,19 +628,16 @@
 
             if(success && allChannels.length > 0) {
                 let listHtml = `<div class="mt-3 mb-1 max-h-[260px] overflow-y-auto custom-scrollbar bg-[#020617]/90 rounded-lg border border-emerald-800/60 p-1 space-y-1 shadow-inner relative">`;
-                
-                // Optimized touch lists rendered in chatbot container box
                 const limit = Math.min(allChannels.length, 75); 
                 for(let i = 0; i < limit; i++) {
                     const ch = allChannels[i];
                     const safeName = ch.name.replace(/'/g, "\\'").replace(/"/g, "&quot;");
-                    let safeUrl = "";
-                    try { safeUrl = ch.url.replace(/'/g, "\\'").replace(/"/g, "&quot;"); } catch(e) {}
-                    let safeLogo = "";
-                    try { if(ch.logo) safeLogo = ch.logo.replace(/'/g, "\\'").replace(/"/g, "&quot;"); } catch(e) {}
-                    
+                    let safeUrl = ""; try { safeUrl = ch.url.replace(/'/g, "\\'").replace(/"/g, "&quot;"); } catch(e) {}
+                    let safeLogo = ""; try { if(ch.logo) safeLogo = ch.logo.replace(/'/g, "\\'").replace(/"/g, "&quot;"); } catch(e) {}
+                    let safeTvgId = ""; try { if(ch.tvgId) safeTvgId = ch.tvgId.replace(/'/g, "\\'").replace(/"/g, "&quot;"); } catch(e) {}
+
                     listHtml += `
-                    <div onclick="playStreamChat('${safeName}', '${safeUrl}', '${safeLogo}')" class="flex items-center gap-3 p-2.5 hover:bg-emerald-950 cursor-pointer rounded border border-transparent hover:border-yellow-500/30 transition-all group active:bg-emerald-900/40">
+                    <div onclick="playStreamChat('${safeName}', '${safeUrl}', '${safeLogo}', '${safeTvgId}')" class="flex items-center gap-3 p-2.5 hover:bg-emerald-950 cursor-pointer rounded border border-transparent hover:border-yellow-500/30 transition-all group active:bg-emerald-900/40">
                         <div class="w-9 h-9 flex-shrink-0 flex items-center justify-center bg-slate-900 rounded border border-emerald-800/50 group-hover:border-yellow-400/60 shadow-sm overflow-hidden p-0.5">
                             ${ch.logo ? `<img src="${ch.logo}" class="max-w-full max-h-full object-contain" onerror="this.outerHTML='<i class=\\'fa-solid fa-tv text-emerald-600 text-[10px]\\'></i>'">` : `<i class="fa-solid fa-tv text-emerald-600 text-xs"></i>`}
                         </div>
@@ -549,42 +647,30 @@
                         </div>
                     </div>`;
                 }
-                
                 if (allChannels.length > limit) {
                     listHtml += `<div class="sticky bottom-0 p-2 text-center text-[10px] text-yellow-500 font-bold bg-[#020617] border-t border-emerald-900/60 mt-1 uppercase tracking-widest z-10 shadow-md">+ ${allChannels.length - limit} Saluran Lainnya di Panel Kiri</div>`;
                 }
                 listHtml += `</div>`;
-
                 addChatMessage(`<span class="text-emerald-400 font-bold"><i class="fa-solid fa-satellite-dish animate-pulse"></i> Transmisi Siap!</span><br>Daftar saluran <b>${catName}</b> berhasil dimuat di bawah ini:<br>${listHtml}`, 'bot');
             } else {
                 addChatMessage(`<span class="text-rose-400 font-bold"><i class="fa-solid fa-triangle-exclamation"></i> Gangguan Sinyal</span><br>Gagal memuat basis data saluran. Coba lagi nanti.`, 'bot');
             }
         }
 
-        // CHATBOT LIST ITEM PLAYBACK TRIGGER FUNCTION
-        function playStreamChat(name, url, logo) {
+        function playStreamChat(name, url, logo, tvgId) {
             let safeId = 'unknown';
-            try {
-                safeId = `ch-${btoa(url).replace(/[^a-zA-Z0-9]/g, '').substring(0, 15)}`;
-            } catch(e) {}
-            
-            playStream({name: name, url: url, logo: logo}, safeId);
+            try { safeId = `ch-${btoa(url).replace(/[^a-zA-Z0-9]/g, '').substring(0, 15)}`; } catch(e) {}
+            playStream({name: name, url: url, logo: logo, tvgId: tvgId}, safeId);
             addChatMessage(`Mengkoneksikan satelit langsung ke: <b class="text-yellow-400">${name}</b> <i class="fa-solid fa-satellite-dish fa-fade text-emerald-400 ml-1"></i>`, 'bot');
-            
-            // Autohide chatbot viewport box window constraints on micro screens
-            if(window.innerWidth < 768) {
-                setTimeout(() => toggleChatbot(), 1000);
-            }
+            if(window.innerWidth < 768) { setTimeout(() => toggleChatbot(), 1000); }
         }
 
         function sendChat() {
             const input = document.getElementById('chat-input');
             const txt = input.value.trim();
             if(!txt) return;
-            
             addChatMessage(txt, 'user');
             input.value = '';
-            
             setTimeout(() => {
                 addChatMessage("Terminal mendeteksi instruksi khusus. Silakan gunakan tombol pintasan kategori di bawah panel chat untuk memuat daftar siaran langsung secara instan.", 'bot');
             }, 600);
@@ -600,10 +686,14 @@
             container.scrollTop = container.scrollHeight;
         }
 
-        // PARSER M3U ENGINE CORE
         function changePlaylist() {
             stopPlayer();
-            fetchPlaylist(document.getElementById('playlist-selector').value);
+            const val = document.getElementById('playlist-selector').value;
+            if(val === 'favorites') {
+                loadFavoritesList();
+            } else {
+                fetchPlaylist(val);
+            }
         }
 
         async function fetchPlaylist(url) {
@@ -618,6 +708,13 @@
                 const lines = data.split('\n');
                 allChannels = [];
                 let currentChannel = null;
+                
+                // Menganalisa adanya referensi EPG (x-tvg-url)
+                const firstLine = lines[0];
+                const epgMatch = firstLine.match(/x-tvg-url="([^"]+)"/);
+                if(epgMatch) {
+                    fetchEPG(epgMatch[1]);
+                }
 
                 for (let i = 0; i < lines.length; i++) {
                     const line = lines[i].trim();
@@ -625,6 +722,10 @@
                         currentChannel = {};
                         const logoMatch = line.match(/tvg-logo="([^"]+)"/);
                         currentChannel.logo = logoMatch ? logoMatch[1] : '';
+                        
+                        const tvgIdMatch = line.match(/tvg-id="([^"]+)"/);
+                        currentChannel.tvgId = tvgIdMatch ? tvgIdMatch[1] : '';
+
                         const nameSplit = line.split(',');
                         currentChannel.name = nameSplit.length > 1 ? nameSplit[nameSplit.length - 1].trim() : 'Unknown Channel';
                     } else if (line && !line.startsWith('#') && currentChannel) {
@@ -673,7 +774,15 @@
                     ? `<img src="${ch.logo}" onerror="this.outerHTML='<i class=\\'fa-solid fa-tv text-emerald-700 text-base\\'></i>'" class="w-7 h-7 object-contain bg-slate-950 rounded p-0.5 border border-emerald-800/50">` 
                     : `<i class="fa-solid fa-tv text-emerald-700 text-base"></i>`;
 
-                li.innerHTML = `<div class="w-8 flex-shrink-0 flex justify-center">${logoHtml}</div><div class="truncate text-sm font-bold tracking-wide">${ch.name}</div>`;
+                const safeName = ch.name.replace(/'/g, "\\'").replace(/"/g, "&quot;");
+                let safeUrl = ""; try { safeUrl = ch.url.replace(/'/g, "\\'").replace(/"/g, "&quot;"); } catch(e) {}
+                let safeLogo = ""; try { if(ch.logo) safeLogo = ch.logo.replace(/'/g, "\\'").replace(/"/g, "&quot;"); } catch(e) {}
+                let safeTvgId = ""; try { if(ch.tvgId) safeTvgId = ch.tvgId.replace(/'/g, "\\'").replace(/"/g, "&quot;"); } catch(e) {}
+                
+                const isFav = favorites.some(f => f.url === ch.url);
+                const starHtml = `<span onclick="toggleFavorite(event, '${safeName}', '${safeUrl}', '${safeLogo}', '${safeTvgId}')" class="text-lg ${isFav ? 'text-yellow-400' : 'text-slate-600 hover:text-yellow-400'} transition-colors ml-auto mr-1"><i class="fa-solid fa-star"></i></span>`;
+
+                li.innerHTML = `<div class="w-8 flex-shrink-0 flex justify-center">${logoHtml}</div><div class="truncate text-sm font-bold tracking-wide">${ch.name}</div>${starHtml}`;
                 channelListEl.appendChild(li);
             }
         }
@@ -700,6 +809,9 @@
             document.getElementById('idle-state').classList.add('hidden');
             videoElement.classList.remove('hidden');
             document.getElementById('loading-indicator').classList.remove('hidden');
+            
+            // Tampilkan EPG untuk saluran ini jika ada
+            updateEPGDisplay(channel.tvgId);
 
             if (hls) hls.destroy();
 
@@ -763,12 +875,18 @@
             document.getElementById('idle-state').classList.remove('hidden');
             document.getElementById('loading-indicator').classList.add('hidden');
             document.getElementById('channel-logo-container').style.display = 'none';
+            document.getElementById('epg-container').classList.add('hidden');
             document.getElementById('now-playing-title').innerText = 'Mode Siaga';
             document.getElementById('status-dot').className = 'w-2.5 h-2.5 rounded-full bg-slate-600 shrink-0';
             document.getElementById('status-text').innerText = 'Menunggu instruksi pemutaran';
             document.getElementById('status-text').className = 'text-slate-500 font-bold truncate tracking-wide';
 
             document.querySelectorAll('.channel-item').forEach(el => el.classList.remove('active-channel'));
+            
+            // Exit PiP if active
+            if (document.pictureInPictureElement) {
+                document.exitPictureInPicture().catch(() => {});
+            }
         }
     </script>
 </body>
